@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AccountController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -30,6 +31,10 @@ Route::middleware([
     'verified',
 ])->group(function () {
     Route::get('/dashboard', function () {
-        return Inertia::render('Dashboard');
+        return Inertia::render('Dashboard', [
+            'userAccounts' => auth()->user()->accounts()->get(),
+        ]);
     })->name('dashboard');
 });
+
+Route::get('/accounts/{account}/daily-summary', [AccountController::class, 'dailySummary']);
